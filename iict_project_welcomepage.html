@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Welcome Page — Life for Sea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+
+        
+        :root {
+            --bg: #fcd6a5;
+            --nav-bg: #006994;
+            --card-bg: #ffffff;
+            --card-border: #d4e9f7;
+            --text: #1a3a4a;
+            --text-muted: #4a6a7a;
+            --accent: #006994;
+            --accent2: #e8a020;
+            --footer-bg: rgb(210,180,140);
+            --wave-color: #006994;
+            --hero-overlay: rgba(0, 60, 90, 0.52);
+        }
+
+        body.dark {
+            --bg: #0d1f2d;
+            --nav-bg: #04374d;
+            --card-bg: #1a2f40;
+            --card-border: #1e4060;
+            --text: #e8f4fc;
+            --text-muted: #8ab4cc;
+            --accent: #29aee0;
+            --accent2: #f0b84a;
+            --footer-bg: #0a1822;
+            --wave-color: #29aee0;
+            --hero-overlay: rgba(0, 20, 40, 0.65);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Lato', sans-serif;
+            transition: background-color 0.4s, color 0.4s;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* navbar */
+        .navbar {
+            width: 100%;
+            background-color: var(--nav-bg);
+            color: white;
+            padding: 12px 30px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            transition: background-color 0.4s;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+        }
+
+        .navbar-brand {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s, opacity 0.2s;
+        }
+
+        .navbar-links a:hover { border-bottom-color: var(--accent2); opacity: 0.9; }
+        .navbar-links a.active { border-bottom-color: white; }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .search-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.4);
+            color: white;
+            border-radius: 30px;
+            padding: 6px 18px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            transition: background 0.2s;
+        }
+        .search-btn:hover { background: rgba(255,255,255,0.25); }
+
+         /* darkmode toggle */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-icon { font-size: 1rem; }
+
+        .dark-toggle {
+            position: relative;
+            width: 52px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+        .dark-toggle input { opacity: 0; width: 0; height: 0; }
+
+        .dark-toggle .slider-track {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.25);
+            border-radius: 30px;
+            transition: background 0.3s;
+            border: 1.5px solid rgba(255,255,255,0.4);
+        }
+
+        .dark-toggle input:checked + .slider-track { background: #1a3a55; }
+
+        .dark-toggle .slider-track::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 2px;
+            left: 3px;
+            background: linear-gradient(135deg, #ffcc89, #d8860b);
+            border-radius: 50%;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .dark-toggle input:checked + .slider-track::after {
+            transform: translateX(26px);
+            background: linear-gradient(135deg, #aaa, #555);
+        }
+
+         /* hero banner */
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 30px 100px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #005f8a 0%, #0087bb 50%, #00a8d6 100%);
+        }
+
+       /* animated wave circles */
+        .hero-wave {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            animation: pulse 6s ease-in-out infinite;
+        }
+        .hero-wave:nth-child(1) { width: 600px; height: 600px; top: -200px; left: -150px; animation-delay: 0s; }
+        .hero-wave:nth-child(2) { width: 400px; height: 400px; bottom: -120px; right: -80px; animation-delay: 2s; }
+        .hero-wave:nth-child(3) { width: 250px; height: 250px; top: 50px; right: 200px; animation-delay: 4s; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.08); opacity: 0.9; }
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.18);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            color: white;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.25);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.45s;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: #ffe0a0;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.88);
+            max-width: 620px;
+            margin: 0 auto 32px;
+            line-height: 1.75;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.65s;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.85s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--accent);
+            border: none;
+            border-radius: 40px;
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.6);
+            border-radius: 40px;
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        
+        .hero-bottom-wave {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            z-index: 3;
+        }
+
+        .hero-bottom-wave svg {
+            display: block;
+            width: 100%;
+            height: 55px;
+        }
+
+       
+        .about-strip {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--card-border);
+            padding: 40px 60px;
+            text-align: center;
+            transition: background 0.4s;
+        }
+
+        .about-strip h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .about-strip p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 780px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+            background: var(--accent);
+            padding: 30px 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px 50px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .stat-item:last-child { border-right: none; }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffe0a0;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+      
+        .section {
+            padding: 60px 50px;
+        }
+
+        .section-header {
+            margin-bottom: 36px;
+        }
+
+        .section-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--accent);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 55px;
+            height: 3px;
+            background: var(--accent2);
+            border-radius: 3px;
+            margin-top: 8px;
+        }
+
+        
+        .spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            max-width: 900px;
+        }
+
+        .spot-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,105,148,0.12);
+            border: 1.5px solid var(--card-border);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.4s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .spot-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 40px rgba(0,105,148,0.22);
+        }
+
+        .spot-img-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .spot-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .spot-card:hover .spot-img-wrap img {
+            transform: scale(1.07);
+        }
+
+        .spot-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,105,148,0.85);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .spot-body {
+            padding: 18px 20px 20px;
+        }
+
+        .spot-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .spot-body p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .spot-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+       
+        .explore-section {
+            background: var(--card-bg);
+            transition: background 0.4s;
+        }
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 18px;
+            max-width: 900px;
+        }
+
+        .explore-card {
+            border-radius: 18px;
+            padding: 24px 18px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.25s, box-shadow 0.25s;
+            border: 1.5px solid var(--card-border);
+            background: var(--bg);
+        }
+
+        .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,105,148,0.15);
+        }
+
+        .explore-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .explore-card span:last-child {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+        }
+
+      
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+        .footer {
+            background-color: var(--footer-bg);
+            color: white;
+            padding: 40px 60px 30px;
+            margin-top: 0;
+            transition: background-color 0.4s;
+        }
+
+        .footer-title {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: white; text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+
+<nav class="navbar">
+    <a class="navbar-brand" href="iict_project_welcomepage.html">
+        <img src="logo iict project.png" alt="Logo">
+        Life for Sea
+    </a>
+    <div class="navbar-links">
+        <a href="iict_project_welcomepage.html" class="active">Welcome</a>
+        <a href="iict_project_page2.html">Community News</a>
+        <a href="page3.html">Local Events</a>
+        <a href="page4.html">Business Directory</a>
+        <a href="resourcecentre_IICTProject.html">Resource Centre</a>
+        <a href="contactpage_24i-IICTProject.html">Contact</a>
+    </div>
+    <div class="navbar-right">
+       <input type="text" class="search-btn" placeholder="🔍 Search...">
+        <div class="toggle-wrapper">
+            <span class="toggle-icon">☀️</span>
+            <label class="dark-toggle">
+                <input type="checkbox" id="darkmode-toggle">
+                <span class="slider-track"></span>
+            </label>
+            <span class="toggle-icon">🌙</span>
+        </div>
+    </div>
+</nav>
+
+
+<section class="hero">
+    <div class="hero-wave"></div>
+    <div class="hero-wave"></div>
+    <div class="hero-wave"></div>
+    <div class="hero-content">
+        <span class="hero-tag">🌊 Welcome to our Coastal Community Hub</span>
+        <h1>Life for <em>Sea</em></h1>
+        <p>A digital gathering place for coastal residents and visitors to connect, share, and thrive. Explore local events, businesses, and news — all in one place.</p>
+        <div class="hero-btns">
+            <a href="iict_project_page2.html" class="btn-primary">📰 Latest News</a>
+            <a href="page3.html" class="btn-outline">🎉 Local Events</a>
+        </div>
+    </div>
+    <div class="hero-bottom-wave">
+        <svg viewBox="0 0 1200 55" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C200,60 400,0 600,30 C800,60 1000,0 1200,30 L1200,55 L0,55 Z" fill="#fcd6a5" id="waveFill"/>
+        </svg>
+    </div>
+</section>
+
+
+<div class="about-strip reveal">
+    <h2>What is the Coastal Community Hub?</h2>
+    <p>This platform highlights the unique charm of coastal living by showcasing local events, businesses, and news. From promoting eco-friendly initiatives to supporting the local economy, the hub serves as a bridge for fostering collaboration and celebrating the beauty and vibrancy of coastal communities.</p>
+</div>
+
+
+<div class="stats-row reveal">
+    <div class="stat-item">
+        <span class="stat-number" data-target="150">0</span>
+        <span class="stat-label">Community Members</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number" data-target="50">0</span>
+        <span class="stat-label">Local Businesses</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number" data-target="12">0</span>
+        <span class="stat-label">Events This Month</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number" data-target="500">0</span>
+        <span class="stat-label">Lbs of Litter Removed</span>
+    </div>
+</div>
+
+
+<section class="section reveal">
+    <div class="section-header">
+        <span class="section-tag">📍 Explore Karachi's Coast</span>
+        <h2 class="section-title">Popular Spots</h2>
+    </div>
+    <div class="spots-grid">
+
+        <a class="spot-card" href="https://www.tripadvisor.com/Attractions-g295414-Activities-c55-Karachi_Sindh_Province.html" target="_blank">
+            <div class="spot-img-wrap">
+                <img src="coast nav.jpeg" alt="Boat Rides">
+                <span class="spot-badge">🚤 Boat Rides</span>
+            </div>
+            <div class="spot-body">
+                <h3>Coastal Navigation</h3>
+                <p>Discover scenic spots where you can enjoy thrilling boat rides along Karachi's stunning coastline.</p>
+                <span class="spot-link">Explore on TripAdvisor →</span>
+            </div>
+        </a>
+
+        <a class="spot-card" href="https://www.tripadvisor.com/Attractions-g295414-Activities-c61-t52-Karachi_Sindh_Province.html" target="_blank">
+            <div class="spot-img-wrap">
+                <img src="coasta_l evia.jpeg" alt="Beach Spots">
+                <span class="spot-badge">🏖️ Beaches</span>
+            </div>
+            <div class="spot-body">
+                <h3>Best Beach Spots</h3>
+                <p>Find the finest beaches in Karachi — from peaceful coves to lively seafronts perfect for families.</p>
+                <span class="spot-link">Find Beaches →</span>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+
+<section class="section explore-section reveal">
+    <div class="section-header">
+        <span class="section-tag">🗺️ Navigate the Hub</span>
+        <h2 class="section-title">Explore Everything</h2>
+    </div>
+    <div class="explore-grid">
+        <a class="explore-card" href="iict_project_page2.html">
+            <span class="explore-icon">📰</span>
+            <span>Community News</span>
+        </a>
+        <a class="explore-card" href="page3.html">
+            <span class="explore-icon">🎉</span>
+            <span>Local Events</span>
+        </a>
+        <a class="explore-card" href="page4.html">
+            <span class="explore-icon">🏪</span>
+            <span>Business Directory</span>
+        </a>
+        <a class="explore-card" href="resourcecentre_24i-0769_Project.html">
+            <span class="explore-icon">📚</span>
+            <span>Resource Centre</span>
+        </a>
+        <a class="explore-card" href="contactpage_24i-0769_Project.html">
+            <span class="explore-icon">📬</span>
+            <span>Contact Us</span>
+        </a>
+    </div>
+</section>
+
+
+<footer class="footer">
+    <div class="footer-title">Life for sea</div>
+    <div class="footer-links">
+        <a href="">About Us</a>
+        <a href="">FAQs</a>
+        <a href="">Privacy Policy</a>
+        <a href="">Why Join</a>
+        <a href="">Contact Us</a>
+        <a href="">Terms and Conditions</a>
+        <a href="">Advertise with us</a>
+    </div>
+</footer>
+
+<script>
+
+   /* dark mode toggle */
+    const toggle = document.getElementById('darkmode-toggle');
+    toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark', toggle.checked);
+        // update wave fill colour to match bg
+        const waveFill = document.getElementById('waveFill');
+        if (waveFill) {
+            waveFill.setAttribute('fill', toggle.checked ? '#0d1f2d' : '#fcd6a5');
+        }
+    });
+
+   /* scroll reveal */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+   
+    function animateCounter(el) {
+        const target = parseInt(el.dataset.target);
+        const duration = 1800;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                el.textContent = target + '+';
+                clearInterval(timer);
+            } else {
+                el.textContent = Math.floor(current);
+            }
+        }, 16);
+    }
+
+  
+    const statsRow = document.querySelector('.stats-row');
+    let counted = false;
+    const statsObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !counted) {
+            counted = true;
+            document.querySelectorAll('.stat-number').forEach(animateCounter);
+        }
+    }, { threshold: 0.3 });
+    statsObserver.observe(statsRow);
+
+</script>
+
+</body>
+</html>

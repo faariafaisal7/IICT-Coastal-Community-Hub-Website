@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Business Directory — Life for Sea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --bg: #fcd6a5;
+            --nav-bg: #006994;
+            --card-bg: #ffffff;
+            --card-border: #d4e9f7;
+            --text: #1a3a4a;
+            --text-muted: #4a6a7a;
+            --accent: #006994;
+            --accent2: #e8a020;
+            --footer-bg: rgb(210,180,140);
+            --cat1: rgb(22,176,176);
+            --cat2: rgb(135,206,235);
+            --cat3: rgb(244,211,94);
+        }
+
+        body.dark {
+            --bg: #0d1f2d;
+            --nav-bg: #04374d;
+            --card-bg: #1a2f40;
+            --card-border: #1e4060;
+            --text: #e8f4fc;
+            --text-muted: #8ab4cc;
+            --accent: #29aee0;
+            --accent2: #f0b84a;
+            --footer-bg: #0a1822;
+            --cat1: #0d6e6e;
+            --cat2: #1a5a7a;
+            --cat3: #7a6010;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Lato', sans-serif;
+            transition: background-color 0.4s, color 0.4s;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        
+        .navbar {
+            width: 100%; background-color: var(--nav-bg);
+            color: white; padding: 12px 30px 14px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 10px;
+            transition: background-color 0.4s; position: sticky;
+            top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+        }
+        .navbar-brand {
+            font-family: 'Brush Script MT', cursive; font-size: 2rem;
+            color: white; display: flex; align-items: center;
+            gap: 10px; text-decoration: none;
+        }
+        .navbar-brand img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+        .navbar-links { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; }
+        .navbar-links a {
+            color: white; text-decoration: none; font-family: 'Lato', sans-serif;
+            font-size: 0.9rem; font-weight: 600; letter-spacing: 0.03em; padding: 4px 0;
+            border-bottom: 2px solid transparent; transition: border-color 0.2s, opacity 0.2s;
+        }
+        .navbar-links a:hover { border-bottom-color: var(--accent2); opacity: 0.9; }
+        .navbar-links a.active { border-bottom-color: white; }
+        .navbar-right { display: flex; align-items: center; gap: 14px; }
+        .search-input {
+            background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.4);
+            color: white; border-radius: 30px; padding: 6px 18px; font-size: 0.85rem;
+            font-family: 'Lato', sans-serif; outline: none; width: 160px; transition: background 0.2s, width 0.3s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.7); }
+        .search-input:focus { background: rgba(255,255,255,0.25); width: 200px; }
+        .toggle-wrapper { display: flex; align-items: center; gap: 8px; }
+        .toggle-icon { font-size: 1rem; }
+        .dark-toggle { position: relative; width: 52px; height: 26px; cursor: pointer; }
+        .dark-toggle input { opacity: 0; width: 0; height: 0; }
+        .dark-toggle .slider-track {
+            position: absolute; inset: 0; background: rgba(255,255,255,0.25);
+            border-radius: 30px; transition: background 0.3s; border: 1.5px solid rgba(255,255,255,0.4);
+        }
+        .dark-toggle input:checked + .slider-track { background: #1a3a55; }
+        .dark-toggle .slider-track::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            top: 2px; left: 3px; background: linear-gradient(135deg, #ffcc89, #d8860b);
+            border-radius: 50%; transition: transform 0.3s, background 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .dark-toggle input:checked + .slider-track::after {
+            transform: translateX(26px); background: linear-gradient(135deg, #aaa, #555);
+        }
+
+      
+        .page-hero {
+            background: linear-gradient(135deg, #005f8a 0%, #0087bb 60%, #00a8d6 100%);
+            padding: 60px 40px 70px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 70% 40%, rgba(255,255,255,0.08) 0%, transparent 60%);
+        }
+        .page-hero-tag {
+            display: inline-block; background: rgba(255,255,255,0.18);
+            color: white; font-size: 0.75rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            padding: 6px 18px; border-radius: 30px; margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem); color: white;
+            margin-bottom: 12px; text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+        .page-hero p {
+            color: rgba(255,255,255,0.88); font-size: 1.05rem;
+            max-width: 620px; margin: 0 auto; line-height: 1.75;
+        }
+        .page-hero-wave { position: absolute; bottom: -2px; left: 0; width: 100%; overflow: hidden; line-height: 0; }
+        .page-hero-wave svg { display: block; width: 100%; height: 45px; }
+
+      
+        .filter-bar {
+            display: flex; justify-content: center;
+            gap: 12px; flex-wrap: wrap;
+            padding: 36px 30px 10px;
+        }
+
+        .filter-btn {
+            background: var(--card-bg); color: var(--text);
+            border: 2px solid var(--card-border);
+            border-radius: 30px; padding: 8px 22px;
+            font-size: 0.85rem; font-weight: 700;
+            font-family: 'Lato', sans-serif; cursor: pointer;
+            transition: all 0.25s; letter-spacing: 0.04em;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent); color: white; border-color: var(--accent);
+        }
+
+      
+        .main { max-width: 1100px; margin: 0 auto; padding: 30px 30px 60px; }
+
+       
+        .cat-section { margin-bottom: 60px; }
+
+        .cat-header {
+            display: flex; align-items: center; gap: 14px;
+            padding: 18px 24px; border-radius: 16px 16px 0 0;
+            margin-bottom: 0;
+        }
+
+        .cat-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; color: white;
+        }
+
+        .cat-header-emoji { font-size: 1.8rem; }
+
+        .cat-header.teal   { background: var(--cat1); }
+        .cat-header.blue   { background: var(--cat2); color: #1a3a4a !important; }
+        .cat-header.yellow { background: var(--cat3); color: #1a3a4a !important; }
+        .cat-header.blue h2, .cat-header.yellow h2 { color: #1a3a4a; }
+ /* business cards */
+        .biz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 20px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            padding: 24px;
+            transition: background 0.4s;
+        }
+
+        .biz-card {
+            background: var(--bg);
+            border-radius: 16px; overflow: hidden;
+            border: 1.5px solid var(--card-border);
+            box-shadow: 0 3px 12px rgba(0,105,148,0.08);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.4s;
+        }
+
+        .biz-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,105,148,0.18);
+        }
+
+        .biz-img-wrap { position: relative; height: 160px; overflow: hidden; }
+        .biz-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .biz-card:hover .biz-img { transform: scale(1.06); }
+
+        .biz-body { padding: 16px 18px 18px; }
+
+        .biz-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .biz-desc {
+            font-size: 0.85rem; color: var(--text-muted);
+            line-height: 1.6; margin-bottom: 12px;
+        }
+
+        .biz-info {
+            display: flex; flex-direction: column; gap: 4px;
+            font-size: 0.8rem; color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .biz-info span { display: flex; align-items: center; gap: 6px; }
+
+        .biz-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .biz-btn {
+            background: var(--accent); color: white;
+            border: none; border-radius: 20px;
+            padding: 6px 16px; font-size: 0.78rem;
+            font-weight: 700; font-family: 'Lato', sans-serif;
+            cursor: pointer; text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s; display: inline-block;
+        }
+        .biz-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        .biz-btn.outline {
+            background: transparent; color: var(--accent);
+            border: 1.5px solid var(--accent);
+        }
+        .biz-btn.outline:hover { background: var(--accent); color: white; }
+
+         /* scroll reveal */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+         /* footer */
+        .footer {
+            background-color: var(--footer-bg); color: white;
+            padding: 40px 60px 30px; transition: background-color 0.4s;
+        }
+        .footer-title { font-family: 'Brush Script MT', cursive; font-size: 3rem; margin-bottom: 20px; }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 8px 30px; }
+        .footer-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: white; text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+ 
+<nav class="navbar">
+    <a class="navbar-brand" href="iict_project_welcomepage.html">
+        <img src="logo iict project.png" alt="Logo"> Life for Sea
+    </a>
+    <div class="navbar-links">
+        <a href="iict_project_welcomepage.html">Welcome</a>
+        <a href="iict_project_page2.html">Community News</a>
+        <a href="page3.html">Local Events</a>
+        <a href="page4.html" class="active">Business Directory</a>
+        <a href="resourcecentre_IICTProject.html">Resource Centre</a>
+        <a href="contactpage_IICTProject.html">Contact</a>
+    </div>
+    <div class="navbar-right">
+        <input type="text" class="search-input" placeholder="🔍 Search...">
+        <div class="toggle-wrapper">
+            <span class="toggle-icon">☀️</span>
+            <label class="dark-toggle">
+                <input type="checkbox" id="darkmode-toggle">
+                <span class="slider-track"></span>
+            </label>
+            <span class="toggle-icon">🌙</span>
+        </div>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <span class="page-hero-tag">🏪 Support Local</span>
+    <h1>Business Directory</h1>
+    <p>A guide to the finest businesses in our local coastal community — from restaurants and hotels to shops and markets.</p>
+    <div class="page-hero-wave">
+        <svg viewBox="0 0 1200 45" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,25 C200,50 400,0 600,25 C800,50 1000,0 1200,25 L1200,45 L0,45 Z" fill="#fcd6a5" id="waveFill"/>
+        </svg>
+    </div>
+</section>
+
+
+<div class="filter-bar reveal">
+    <button class="filter-btn active" onclick="filterCat('all', this)">🌊 All</button>
+    <button class="filter-btn" onclick="filterCat('restaurants', this)">🍴 Restaurants</button>
+    <button class="filter-btn" onclick="filterCat('hotels', this)">🏨 Hotels</button>
+    <button class="filter-btn" onclick="filterCat('shops', this)">🛍️ Shops</button>
+</div>
+
+
+<main class="main">
+
+    
+    <div class="cat-section reveal" data-cat="restaurants">
+        <div class="cat-header teal">
+            <span class="cat-header-emoji">🍴</span>
+            <h2>Sea Food Restaurants &amp; Cafés</h2>
+        </div>
+        <div class="biz-grid">
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business1.png" alt="East End">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">East End Restaurant</div>
+                    <p class="biz-desc">The locals' favourite with a unique and diverse menu and a mesmerizing view of the sea. A true tourist attraction.</p>
+                    <div class="biz-info">
+                        <span>📍 Clifton Beach, Karachi</span>
+                        <span>📞 +92-0123-4567</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business2.png" alt="Sea Salt">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Sea Salt</div>
+                    <p class="biz-desc">Renowned for its special seafood delicacies and beachfront ambience — perfect for family gatherings and hangouts.</p>
+                    <div class="biz-info">
+                        <span>📍 Emaar Coral Towers</span>
+                        <span>📞 +92-0123-9870</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business3.png" alt="Cafe Aylanto">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Cafe Aylanto</div>
+                    <p class="biz-desc">A premier dining location known for vibrant ambience, signature pastas, fresh salads, and a serene coastal setting.</p>
+                    <div class="biz-info">
+                        <span>📍 Clifton Beach, Karachi</span>
+                        <span>📞 +92-0123-8976</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    
+    <div class="cat-section reveal" data-cat="hotels">
+        <div class="cat-header blue">
+            <span class="cat-header-emoji">🏨</span>
+            <h2>Hotels &amp; Accommodation</h2>
+        </div>
+        <div class="biz-grid">
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business4.png" alt="Beach Resort">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Beach Resort</div>
+                    <p class="biz-desc">Nestled along the coastline offering premier accommodation facilities with elegant rooms and world-class services.</p>
+                    <div class="biz-info">
+                        <span>📍 Clifton Beach, Karachi</span>
+                        <span>📞 +92-0123-56742</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business5.png" alt="Hotel Crown Inn">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Hotel Crown Inn</div>
+                    <p class="biz-desc">Spacious rooms, impeccable services, and delicious cuisine make this a memorable experience for every visitor.</p>
+                    <div class="biz-info">
+                        <span>📍 Sea View Road, Karachi</span>
+                        <span>📞 +92-0123-90876</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business6.png" alt="Hotel Galaxy">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Hotel Galaxy</div>
+                    <p class="biz-desc">Known for its stellar design and exceptional services, with stunning sea views that make every stay unforgettable.</p>
+                    <div class="biz-info">
+                        <span>📍 Sea View, Karachi</span>
+                        <span>📞 +92-0123-12367</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Book Now</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+  
+    <div class="cat-section reveal" data-cat="shops">
+        <div class="cat-header yellow">
+            <span class="cat-header-emoji">🛍️</span>
+            <h2>Shops &amp; Markets</h2>
+        </div>
+        <div class="biz-grid">
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business7.png" alt="Sea View Market">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Sea View Market</div>
+                    <p class="biz-desc">Main attraction for tourists and locals — from groceries to clothes and shoes, a must-visit spot in Karachi.</p>
+                    <div class="biz-info">
+                        <span>📍 Coastal Boulevard, Karachi</span>
+                        <span>📞 +92-0123-876543</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Visit</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business8.png" alt="Ocean Breeze Market">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Ocean Breeze Market</div>
+                    <p class="biz-desc">Local sea catch, handcrafted souvenirs, and beach essentials. Famous for delicately hand-crafted beach hats.</p>
+                    <div class="biz-info">
+                        <span>📍 Clifton Beach Road, Karachi</span>
+                        <span>📞 +92-0987-95643</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Visit</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-img-wrap">
+                    <img class="biz-img" src="business9.png" alt="Mariner's Market">
+                </div>
+                <div class="biz-body">
+                    <div class="biz-name">Mariner's Market</div>
+                    <p class="biz-desc">Situated on Manora Island, this buzzing marketplace offers fruits, vegetables, and fish products loved by locals and tourists alike.</p>
+                    <div class="biz-info">
+                        <span>📍 Manora Island, Karachi</span>
+                        <span>📞 +92-0987-91267</span>
+                    </div>
+                    <div class="biz-actions">
+                        <a href="" class="biz-btn">Visit</a>
+                        <a href="" class="biz-btn outline">Website</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+    <div class="footer-title">Life for sea</div>
+    <div class="footer-links">
+        <a href="">About Us</a>
+        <a href="">FAQs</a>
+        <a href="">Privacy Policy</a>
+        <a href="">Why Join</a>
+        <a href="">Contact Us</a>
+        <a href="">Terms and Conditions</a>
+        <a href="">Advertise with us</a>
+    </div>
+</footer>
+
+<script>
+    
+    const toggle = document.getElementById('darkmode-toggle');
+    toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark', toggle.checked);
+        const wf = document.getElementById('waveFill');
+        if (wf) wf.setAttribute('fill', toggle.checked ? '#0d1f2d' : '#fcd6a5');
+    });
+
+    
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+        });
+    }, { threshold: 0.08 });
+    revealEls.forEach(el => obs.observe(el));
+
+   
+    function filterCat(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.cat-section').forEach(sec => {
+            if (cat === 'all' || sec.dataset.cat === cat) {
+                sec.style.display = '';
+            } else {
+                sec.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

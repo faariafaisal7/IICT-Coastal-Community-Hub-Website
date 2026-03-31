@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Resource Centre — Life for Sea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --bg: #fcd6a5; --nav-bg: #006994;
+            --card-bg: #ffffff; --card-border: #d4e9f7;
+            --text: #1a3a4a; --text-muted: #4a6a7a;
+            --accent: #006994; --accent2: #e8a020;
+            --footer-bg: rgb(210,180,140);
+        }
+        body.dark {
+            --bg: #0d1f2d; --nav-bg: #04374d;
+            --card-bg: #1a2f40; --card-border: #1e4060;
+            --text: #e8f4fc; --text-muted: #8ab4cc;
+            --accent: #29aee0; --accent2: #f0b84a;
+            --footer-bg: #0a1822;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; transition: background-color 0.4s, color 0.4s; min-height: 100vh; overflow-x: hidden; }
+
+        /* Navbar */
+        .navbar { width: 100%; background-color: var(--nav-bg); color: white; padding: 12px 30px 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; transition: background-color 0.4s; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .navbar-brand { font-family: 'Brush Script MT', cursive; font-size: 2rem; color: white; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .navbar-brand img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+        .navbar-links { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; }
+        .navbar-links a { color: white; text-decoration: none; font-family: 'Lato', sans-serif; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.03em; padding: 4px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s, opacity 0.2s; }
+        .navbar-links a:hover { border-bottom-color: var(--accent2); opacity: 0.9; }
+        .navbar-links a.active { border-bottom-color: white; }
+        .navbar-right { display: flex; align-items: center; gap: 14px; }
+        .search-input { background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.4); color: white; border-radius: 30px; padding: 6px 18px; font-size: 0.85rem; font-family: 'Lato', sans-serif; outline: none; width: 160px; transition: background 0.2s, width 0.3s; }
+        .search-input::placeholder { color: rgba(255,255,255,0.7); }
+        .search-input:focus { background: rgba(255,255,255,0.25); width: 200px; }
+        .toggle-wrapper { display: flex; align-items: center; gap: 8px; }
+        .toggle-icon { font-size: 1rem; }
+        .dark-toggle { position: relative; width: 52px; height: 26px; cursor: pointer; }
+        .dark-toggle input { opacity: 0; width: 0; height: 0; }
+        .dark-toggle .slider-track { position: absolute; inset: 0; background: rgba(255,255,255,0.25); border-radius: 30px; transition: background 0.3s; border: 1.5px solid rgba(255,255,255,0.4); }
+        .dark-toggle input:checked + .slider-track { background: #1a3a55; }
+        .dark-toggle .slider-track::after { content: ''; position: absolute; width: 20px; height: 20px; top: 2px; left: 3px; background: linear-gradient(135deg, #ffcc89, #d8860b); border-radius: 50%; transition: transform 0.3s, background 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .dark-toggle input:checked + .slider-track::after { transform: translateX(26px); background: linear-gradient(135deg, #aaa, #555); }
+
+        /* page hero */
+        .page-hero { background: linear-gradient(135deg, #005f8a 0%, #0087bb 60%, #00a8d6 100%); padding: 60px 40px 70px; text-align: center; position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 60%, rgba(255,255,255,0.08) 0%, transparent 60%); }
+        .page-hero-tag { display: inline-block; background: rgba(255,255,255,0.18); color: white; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 18px; border-radius: 30px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.3); }
+        .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.2rem); color: white; margin-bottom: 12px; text-shadow: 0 2px 20px rgba(0,0,0,0.2); }
+        .page-hero p { color: rgba(255,255,255,0.88); font-size: 1.05rem; max-width: 600px; margin: 0 auto; line-height: 1.75; }
+        .page-hero-wave { position: absolute; bottom: -2px; left: 0; width: 100%; overflow: hidden; line-height: 0; }
+        .page-hero-wave svg { display: block; width: 100%; height: 45px; }
+
+        /* main */
+        .main { max-width: 1100px; margin: 0 auto; padding: 50px 30px 60px; }
+        .section-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 8px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--accent); display: inline-block; position: relative; margin-bottom: 36px; }
+        .section-title::after { content: ''; display: block; width: 55px; height: 3px; background: var(--accent2); border-radius: 3px; margin-top: 8px; }
+
+        /* flip cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 28px; margin-bottom: 60px; }
+        .flip-container { height: 300px; perspective: 1000px; }
+        .flip-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.65s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+        .flip-container:hover .flip-card, .flip-container.flipped .flip-card { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; overflow: hidden; }
+        .flip-front { background-size: cover; background-position: center; display: flex; align-items: flex-end; }
+        .flip-front-overlay { width: 100%; padding: 16px 18px; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%); color: white; }
+        .flip-front-overlay h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+        .flip-front-overlay p { font-size: 0.75rem; opacity: 0.8; margin-top: 2px; }
+        .flip-back { transform: rotateY(180deg); padding: 26px 22px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+        .flip-back h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 6px; }
+        .flip-back p, .flip-back a { font-size: 0.88rem; line-height: 1.65; color: inherit; text-decoration: none; display: block; }
+        .flip-back a:hover { text-decoration: underline; }
+        .card-swim .flip-back { background: rgb(136,217,163); color: #0c4041; }
+        .card-wild .flip-back { background: rgb(135,206,235); color: #0c3050; }
+        .card-vol  .flip-back { background: rgb(244,211,94); color: #3a3000; }
+        .card-emer .flip-back { background: rgb(22,176,176); color: #002a2a; }
+
+        /* video */
+        .video-section { margin-bottom: 50px; }
+        .video-wrap { border-radius: 20px; overflow: hidden; box-shadow: 0 8px 35px rgba(0,105,148,0.2); }
+        .video-wrap video { width: 100%; display: block; max-height: 480px; object-fit: cover; }
+
+       
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        
+        .footer { background-color: var(--footer-bg); color: white; padding: 40px 60px 30px; transition: background-color 0.4s; }
+        .footer-title { font-family: 'Brush Script MT', cursive; font-size: 3rem; margin-bottom: 20px; }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 8px 30px; }
+        .footer-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: white; text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="navbar-brand" href="iict_project_welcomepage.html">
+        <img src="logo iict project.png" alt="Logo"> Life for Sea
+    </a>
+    <div class="navbar-links">
+        <a href="iict_project_welcomepage.html">Welcome</a>
+        <a href="iict_project_page2.html">Community News</a>
+        <a href="page3.html">Local Events</a>
+        <a href="page4.html">Business Directory</a>
+        <a href="resourcecentre_24i-0769_Project.html" class="active">Resource Centre</a>
+        <a href="contactpage_24i-0769_Project.html">Contact</a>
+    </div>
+    <div class="navbar-right">
+        <input type="text" class="search-input" placeholder="🔍 Search...">
+        <div class="toggle-wrapper">
+            <span class="toggle-icon">☀️</span>
+            <label class="dark-toggle">
+                <input type="checkbox" id="darkmode-toggle">
+                <span class="slider-track"></span>
+            </label>
+            <span class="toggle-icon">🌙</span>
+        </div>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <span class="page-hero-tag">📚 Stay Safe &amp; Informed</span>
+    <h1>Resource Centre</h1>
+    <p>Safety tips, wildlife interaction guides, volunteer opportunities, and emergency contacts — all in one place.</p>
+    <div class="page-hero-wave">
+        <svg viewBox="0 0 1200 45" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,25 C200,50 400,0 600,25 C800,50 1000,0 1200,25 L1200,45 L0,45 Z" fill="#fcd6a5" id="waveFill"/>
+        </svg>
+    </div>
+</section>
+
+<main class="main">
+
+    <div class="reveal">
+        <span class="section-tag">💡 Hover or tap each card to learn more</span>
+        <h2 class="section-title">Resources at a Glance</h2>
+    </div>
+
+    <div class="cards-grid reveal">
+
+        <div class="flip-container card-swim">
+            <div class="flip-card">
+                <div class="flip-front" style="background-image: url('pool.jpg');">
+                    <div class="flip-front-overlay">
+                        <h3>Safe Swimming</h3>
+                        <p>Hover to see tips →</p>
+                    </div>
+                </div>
+                <div class="flip-back">
+                    <h3>🏊 Safe Swimming Tips</h3>
+                    <p>1. Swim only in designated areas</p>
+                    <p>2. Check weather conditions beforehand</p>
+                    <p>3. Always wear a life vest in open water</p>
+                    <p>4. Never swim alone</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-container card-wild">
+            <div class="flip-card">
+                <div class="flip-front" style="background-image: url('fish.jpg');">
+                    <div class="flip-front-overlay">
+                        <h3>Wildlife Interaction</h3>
+                        <p>Hover to see tips →</p>
+                    </div>
+                </div>
+                <div class="flip-back">
+                    <h3>🐠 Wildlife Tips</h3>
+                    <p>1. Never feed wild animals</p>
+                    <p>2. Maintain a respectful distance</p>
+                    <p>3. Do not startle or chase animals</p>
+                    <p>4. Leave no trace behind</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-container card-vol">
+            <div class="flip-card">
+                <div class="flip-front" style="background-image: url('volunteer.jpg');">
+                    <div class="flip-front-overlay">
+                        <h3>Volunteer Opportunities</h3>
+                        <p>Hover to explore →</p>
+                    </div>
+                </div>
+                <div class="flip-back">
+                    <h3>🌿 Get Involved</h3>
+                    <a href="https://swa.com.pk/" target="_blank">1. Sahil Welfare Association</a>
+                    <a href="https://www.indusearthtrust.org/" target="_blank">2. Indus Earth Trust</a>
+                    <a href="https://www.tcf.org.pk/" target="_blank">3. The Citizens Foundation</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-container card-emer">
+            <div class="flip-card">
+                <div class="flip-front" style="background-image: url('information.jpg');">
+                    <div class="flip-front-overlay">
+                        <h3>Emergency Contacts</h3>
+                        <p>Hover for numbers →</p>
+                    </div>
+                </div>
+                <div class="flip-back">
+                    <h3>🚨 Emergency Contacts</h3>
+                    <a href="tel:1043">1043 — Women's Helpline</a>
+                    <a href="tel:1122">1122 — Ambulance</a>
+                    <a href="tel:1422">1422 — Tourist Police</a>
+                    <a href="tel:1121">1121 — Child Protection</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="video-section reveal">
+        <span class="section-tag">🎬 Watch &amp; Learn</span>
+        <h2 class="section-title">Featured Video</h2>
+        <div class="video-wrap">
+            <video autoplay loop muted playsinline>
+                <source src="video2.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <div class="footer-title">Life for sea</div>
+    <div class="footer-links">
+        <a href="">About Us</a><a href="">FAQs</a><a href="">Privacy Policy</a>
+        <a href="">Why Join</a><a href="">Contact Us</a>
+        <a href="">Terms and Conditions</a><a href="">Advertise with us</a>
+    </div>
+</footer>
+
+<script>
+    const toggle = document.getElementById('darkmode-toggle');
+    toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark', toggle.checked);
+        const wf = document.getElementById('waveFill');
+        if (wf) wf.setAttribute('fill', toggle.checked ? '#0d1f2d' : '#fcd6a5');
+    });
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => obs.observe(el));
+    document.querySelectorAll('.flip-container').forEach(card => {
+        card.addEventListener('click', () => card.classList.toggle('flipped'));
+    });
+</script>
+
+</body>
+</html>

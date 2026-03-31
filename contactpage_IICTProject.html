@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Contact — Life for Sea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg:#fcd6a5;--nav-bg:#006994;--card-bg:#ffffff;--card-border:#d4e9f7;--text:#1a3a4a;--text-muted:#4a6a7a;--accent:#006994;--accent2:#e8a020;--footer-bg:rgb(210,180,140);--input-bg:#f5f9fc;--input-border:#c5dde8; }
+        body.dark { --bg:#0d1f2d;--nav-bg:#04374d;--card-bg:#1a2f40;--card-border:#1e4060;--text:#e8f4fc;--text-muted:#8ab4cc;--accent:#29aee0;--accent2:#f0b84a;--footer-bg:#0a1822;--input-bg:#0f2030;--input-border:#1e4060; }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{background-color:var(--bg);color:var(--text);font-family:'Lato',sans-serif;transition:background-color 0.4s,color 0.4s;min-height:100vh;overflow-x:hidden;}
+
+        /* NAVBAR */
+        .navbar{width:100%;background-color:var(--nav-bg);color:white;padding:12px 30px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;transition:background-color 0.4s;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.25);}
+        .navbar-brand{font-family:'Brush Script MT',cursive;font-size:2rem;color:white;display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .navbar-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+        .navbar-links{display:flex;align-items:center;flex-wrap:wrap;gap:6px 18px;}
+        .navbar-links a{color:white;text-decoration:none;font-family:'Lato',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:0.03em;padding:4px 0;border-bottom:2px solid transparent;transition:border-color 0.2s,opacity 0.2s;}
+        .navbar-links a:hover{border-bottom-color:var(--accent2);opacity:0.9;}
+        .navbar-links a.active{border-bottom-color:white;}
+        .navbar-right{display:flex;align-items:center;gap:14px;}
+        .search-input{background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:white;border-radius:30px;padding:6px 18px;font-size:0.85rem;font-family:'Lato',sans-serif;outline:none;width:160px;transition:background 0.2s,width 0.3s;}
+        .search-input::placeholder{color:rgba(255,255,255,0.7);}
+        .search-input:focus{background:rgba(255,255,255,0.25);width:200px;}
+        .toggle-wrapper{display:flex;align-items:center;gap:8px;}
+        .toggle-icon{font-size:1rem;}
+        .dark-toggle{position:relative;width:52px;height:26px;cursor:pointer;}
+        .dark-toggle input{opacity:0;width:0;height:0;}
+        .dark-toggle .slider-track{position:absolute;inset:0;background:rgba(255,255,255,0.25);border-radius:30px;transition:background 0.3s;border:1.5px solid rgba(255,255,255,0.4);}
+        .dark-toggle input:checked + .slider-track{background:#1a3a55;}
+        .dark-toggle .slider-track::after{content:'';position:absolute;width:20px;height:20px;top:2px;left:3px;background:linear-gradient(135deg,#ffcc89,#d8860b);border-radius:50%;transition:transform 0.3s,background 0.3s;box-shadow:0 2px 5px rgba(0,0,0,0.3);}
+        .dark-toggle input:checked + .slider-track::after{transform:translateX(26px);background:linear-gradient(135deg,#aaa,#555);}
+
+        /* PAGE HERO */
+        .page-hero{background:linear-gradient(135deg,#005f8a 0%,#0087bb 60%,#00a8d6 100%);padding:60px 40px 70px;text-align:center;position:relative;overflow:hidden;}
+        .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 60% 30%,rgba(255,255,255,0.09) 0%,transparent 55%);}
+        .page-hero-tag{display:inline-block;background:rgba(255,255,255,0.18);color:white;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:6px 18px;border-radius:30px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.3);}
+        .page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:white;margin-bottom:12px;text-shadow:0 2px 20px rgba(0,0,0,0.2);}
+        .page-hero p{color:rgba(255,255,255,0.88);font-size:1.05rem;max-width:580px;margin:0 auto;line-height:1.75;}
+        .page-hero-wave{position:absolute;bottom:-2px;left:0;width:100%;overflow:hidden;line-height:0;}
+        .page-hero-wave svg{display:block;width:100%;height:45px;}
+
+        /* MAIN */
+        .main{max-width:1100px;margin:0 auto;padding:50px 30px 60px;}
+        .contact-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:36px;align-items:start;}
+        @media(max-width:768px){.contact-layout{grid-template-columns:1fr;}}
+
+        /* INFO PANEL */
+        .info-panel{background:var(--card-bg);border-radius:24px;border:1.5px solid var(--card-border);padding:36px 32px;box-shadow:0 6px 28px rgba(0,105,148,0.1);transition:background 0.4s;}
+        .info-panel h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--accent);margin-bottom:28px;}
+        .info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--card-border);}
+        .info-item:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+        .info-icon{width:46px;height:46px;border-radius:14px;background:rgba(0,105,148,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+        .info-text{display:flex;flex-direction:column;gap:3px;}
+        .info-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);}
+        .info-value{font-size:0.95rem;color:var(--text);font-weight:600;}
+        .info-value a{color:var(--accent);text-decoration:none;}
+        .info-value a:hover{text-decoration:underline;}
+        .map-wrap{margin-top:24px;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,105,148,0.12);}
+        .map-wrap iframe{display:block;width:100%;border:none;border-radius:16px;}
+
+        /* FORM PANEL */
+        .form-panel{background:var(--card-bg);border-radius:24px;border:1.5px solid var(--card-border);padding:40px 38px;box-shadow:0 6px 28px rgba(0,105,148,0.1);transition:background 0.4s;}
+        .form-panel h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--accent);margin-bottom:6px;}
+        .form-panel > p{color:var(--text-muted);font-size:0.92rem;margin-bottom:28px;}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+        @media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+        .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+        .form-group label{font-size:0.8rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);}
+        .form-control{background:var(--input-bg);border:1.5px solid var(--input-border);color:var(--text);border-radius:12px;padding:12px 16px;font-size:0.95rem;font-family:'Lato',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s,background 0.4s;width:100%;}
+        .form-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,105,148,0.12);}
+        textarea.form-control{resize:vertical;min-height:120px;}
+        .submit-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:14px;padding:14px 24px;font-size:1rem;font-weight:700;font-family:'Lato',sans-serif;cursor:pointer;transition:opacity 0.2s,transform 0.2s;margin-top:8px;letter-spacing:0.04em;}
+        .submit-btn:hover{opacity:0.88;transform:translateY(-2px);}
+        .success-msg{display:none;background:rgba(136,217,163,0.2);border:1.5px solid rgb(136,217,163);color:#0c4041;border-radius:12px;padding:14px 18px;font-size:0.92rem;font-weight:600;margin-top:16px;text-align:center;}
+
+        /* VIDEO */
+        .video-section{margin-top:60px;}
+        .video-wrap{border-radius:20px;overflow:hidden;box-shadow:0 8px 35px rgba(0,105,148,0.2);}
+        .video-wrap video{width:100%;display:block;max-height:420px;object-fit:cover;}
+
+        /* REVEAL */
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+        .reveal.visible{opacity:1;transform:translateY(0);}
+
+        /* FOOTER */
+        .footer{background-color:var(--footer-bg);color:white;padding:40px 60px 30px;transition:background-color 0.4s;margin-top:60px;}
+        .footer-title{font-family:'Brush Script MT',cursive;font-size:3rem;margin-bottom:20px;}
+        .footer-links{display:flex;flex-wrap:wrap;gap:8px 30px;}
+        .footer-links a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.9rem;transition:color 0.2s;}
+        .footer-links a:hover{color:white;text-decoration:underline;}
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="navbar-brand" href="iict_project_welcomepage.html">
+        <img src="logo iict project.png" alt="Logo"> Life for Sea
+    </a>
+    <div class="navbar-links">
+        <a href="iict_project_welcomepage.html">Welcome</a>
+        <a href="iict_project_page2.html">Community News</a>
+        <a href="page3.html">Local Events</a>
+        <a href="page4.html">Business Directory</a>
+        <a href="resourcecentre_IICTProject.html">Resource Centre</a>
+        <a href="contactpage_IICTProject.html" class="active">Contact</a>
+    </div>
+    <div class="navbar-right">
+        <input type="text" class="search-input" placeholder="🔍 Search...">
+        <div class="toggle-wrapper">
+            <span class="toggle-icon">☀️</span>
+            <label class="dark-toggle">
+                <input type="checkbox" id="darkmode-toggle">
+                <span class="slider-track"></span>
+            </label>
+            <span class="toggle-icon">🌙</span>
+        </div>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <span class="page-hero-tag">📬 We'd Love to Hear From You</span>
+    <h1>Contact Us</h1>
+    <p>Have questions, suggestions, or feedback? Reach out and help us make Life for Sea your perfect Coastal Community Hub.</p>
+    <div class="page-hero-wave">
+        <svg viewBox="0 0 1200 45" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,25 C200,50 400,0 600,25 C800,50 1000,0 1200,25 L1200,45 L0,45 Z" fill="#fcd6a5" id="waveFill"/>
+        </svg>
+    </div>
+</section>
+
+<main class="main">
+    <div class="contact-layout reveal">
+
+        <div class="info-panel">
+            <h2>Find Us</h2>
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <div class="info-text">
+                    <span class="info-label">Address</span>
+                    <span class="info-value">Clifton Block 3, 5th Avenue<br>Karachi, Pakistan</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📞</div>
+                <div class="info-text">
+                    <span class="info-label">Phone</span>
+                    <span class="info-value"><a href="tel:+6161234567">+616-123-4567</a></span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">✉️</div>
+                <div class="info-text">
+                    <span class="info-label">Email</span>
+                    <span class="info-value"><a href="mailto:lifeforsea@gmail.com">lifeforsea@gmail.com</a></span>
+                </div>
+            </div>
+            <div class="map-wrap">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.4880288573486!2d67.02047987482504!3d24.8129787471569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33d3296aa38f3%3A0x4da36d9ba42c6cda!2sCLIFTON%20BLOCK%203!5e0!3m2!1sen!2s!4v1732563975453!5m2!1sen!2s" height="220" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <h2>Get in Touch</h2>
+            <p>Our team will get back to you within 24 hours.</p>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" class="form-control" placeholder="Faaria" required>
+                </div>
+                <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" class="form-control" placeholder="Faisal" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Contact Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="+92 300 0000000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" class="form-control" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button class="submit-btn" onclick="handleSubmit()">Send Message 🌊</button>
+            <div class="success-msg" id="successMsg">✅ Thank you! Your message has been sent. We'll be in touch within 24 hours.</div>
+        </div>
+
+    </div>
+
+    <div class="video-section reveal">
+        <div class="video-wrap">
+            <video autoplay loop muted playsinline>
+                <source src="video1.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-title">Life for sea</div>
+    <div class="footer-links">
+        <a href="">About Us</a><a href="">FAQs</a><a href="">Privacy Policy</a>
+        <a href="">Why Join</a><a href="">Contact Us</a>
+        <a href="">Terms and Conditions</a><a href="">Advertise with us</a>
+    </div>
+</footer>
+
+<script>
+    const toggle = document.getElementById('darkmode-toggle');
+    toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark', toggle.checked);
+        const wf = document.getElementById('waveFill');
+        if (wf) wf.setAttribute('fill', toggle.checked ? '#0d1f2d' : '#fcd6a5');
+    });
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => obs.observe(el));
+    function handleSubmit() {
+        const fname = document.getElementById('fname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if (!fname || !email || !message) { alert('Please fill in your name, email, and message before sending.'); return; }
+        document.getElementById('successMsg').style.display = 'block';
+        setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 5000);
+    }
+</script>
+
+</body>
+</html>
